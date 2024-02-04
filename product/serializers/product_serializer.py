@@ -1,7 +1,7 @@
 from rest_framework import serializers
-
+from product.models import Category
 from product.models.product import Product
-from product.serializers.category_serializer import category_serializer
+from product.serializers.category_serializer import CategorySerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True, many=True)
