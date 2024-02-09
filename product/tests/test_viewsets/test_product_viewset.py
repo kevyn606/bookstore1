@@ -22,7 +22,7 @@ class TestProductViewSet(APITestCase):
             price=200.00,
         )
 
-    def test_det_all_product(self):
+    def test_get_all_product(self):
         response = self.client.get(
             reverse('product-list', kwargs={'version': 'v1'})
         )
@@ -43,7 +43,7 @@ class TestProductViewSet(APITestCase):
         })
 
         response = self.client.post(
-            reverse('product-list', kwrgs={'version': 'v1'}),
+            reverse('product-list', kwargs={'version': 'v1'}),
             data=data,
             content_type='application/json'
         )
@@ -53,4 +53,4 @@ class TestProductViewSet(APITestCase):
         created_product = Product.objects.get(title='notebook')
 
         self.assertEqual(created_product.title, 'notebook')
-        self.assertEqaul(created_product.price, 800.00)
+        self.assertEqual(created_product.price, 800.00)
