@@ -26,12 +26,12 @@ class TestOrderViewSet(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+
         order_data = json.loads(response.content)
-        if order_data:
-            first_order = order_data[0]
-            self.assertIn('product', first_order)  # Verifica se 'product' está presente no primeiro pedido
-        else:
-            self.fail("Nenhum pedido foi retornado na resposta.")
+        self.assertEqual(order_data['results'][0]['product'][0]['title'], self.product.title)
+        self.assertEqual(order_data['results'][0]['product'][0]['price'], self.product.price)
+        self.assertEqual(order_data['results'][0]['product'][0]['active'], self.product.active)
+        self.assertEqual(order_data['results'][0]['product'][0]['category'][0]['title'], self.category.title)        
 
     def test_create_order(self):
         user = UserFactory()
@@ -47,6 +47,7 @@ class TestOrderViewSet(APITestCase):
             content_type='application/json'
         )
 
+        
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         created_order = Order.objects.get(user=user)
