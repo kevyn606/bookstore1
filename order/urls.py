@@ -6,6 +6,7 @@ from order import viewsets
 router = routers.SimpleRouter()
 router.register(r'order', viewsets.OrderViewSet, basename='order')
 
+
 urlpatterns = [
-    path('api/', include(router.urls)),
+  path("", include(router.urls)),
 ]
