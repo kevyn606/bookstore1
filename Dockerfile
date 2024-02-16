@@ -1,4 +1,4 @@
-# `python-base` sets up all our shared environment variables
+## `python-base` sets up all our shared environment variables
 FROM python:3.12-slim as python-base
 
 # Define environment variables
@@ -22,30 +22,28 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y \
         curl \
         build-essential \
-        python3-dev   # Instalação do pacote python3-dev
+        python3-dev \
+        libpq-dev \
+        gcc
 
 # Install Poetry
-RUN pip install poetry
+RUN curl -sSL https://install.python-poetry.org | python -
 
 # Install Postgres dependencies inside Docker
-RUN apt-get -y install libpq-dev gcc \
-    && pip install psycopg2
-
-# Copy project requirement files
-WORKDIR $PYSETUP_PATH
-COPY poetry.lock pyproject.toml ./
-
-# Install runtime dependencies
-RUN poetry install --no-dev
-
-# Install runtime dependencies again for faster installation
-RUN poetry install
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc
 
 # Set working directory
 WORKDIR /app
 
 # Copy project files
-COPY . /app/
+COPY . .
+
+# Copy project requirement files
+COPY poetry.lock pyproject.toml $PYSETUP_PATH/
+
+# Install runtime dependencies
+RUN poetry install --no-dev
 
 # Expose port
 EXPOSE 8000
