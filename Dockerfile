@@ -27,6 +27,8 @@ RUN apt-get update \
 # install poetry - respects $POETRY_VERSION & $POETRY_HOME
 RUN pip install poetry
 
+
+
 RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
     && pip install psycopg2
