@@ -6,20 +6,23 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v1
+      - name: Update pip
+        run: pip install --upgrade pip
       - name: Set up Python
         uses: actions/setup-python@master
         with:
           python-version: 3.8
       - name: Install poetry
         run: |
-          pip install -U pip
-          pip install poetry
-          poetry install
+          poetry self update --preview
+          poetry --version
         env:
           POETRY_VIRTUALENVS_CREATE: false
 
-      - name: View poetry --help
-        run: poetry --help
+      - name: Debug
+        run: |
+          python --version
+          poetry --version
 
       - name: Install dependencies
         shell: bash
